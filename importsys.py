@@ -14,15 +14,15 @@ def ok_or_not(percent):
     else:
         print("OK")
 
-@task(name="index.mmi")
+@task(name="index.bwa")
 def get_index():
-    p = subprocess.Popen("./minimap2/minimap2 -d index.mmi GCF_000005845.2_ASM584v2_genomic.fna", shell=True)
+    p = subprocess.Popen("./bwa-mem index ref.fa GCF_000005845.2_ASM584v2_genomic.fna", shell=True)
     p.wait()
-    return "index.mmi"
+    return "index.bwa"
 
 @task(name="res.sam")
 def create_sam(index_file):
-    p = subprocess.Popen(str.format("./minimap2/minimap2 -a {0} GCF_000005845.2_ASM584v2_genomic.fna > res.sam", index_file), shell=True)
+    p = subprocess.Popen(str.format("./bwa-mem2 mem -t {0} ref.fa GCF_000005845.2_ASM584v2_genomic.fna > out.sam ", index_file), shell=True)
     p.wait()
     return "res.sam"
 
